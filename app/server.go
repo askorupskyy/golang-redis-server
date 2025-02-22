@@ -38,6 +38,8 @@ func handleConnection(conn net.Conn) {
 			n, err = conn.Write([]byte("+PONG\r\n"))
 		case "SET":
 			commands.HandleSet(args, conn)
+		case "DEL":
+			commands.HandleDel(args, conn)
 		case "TTL":
 			commands.HandleTTL(args, conn)
 		case "GET":

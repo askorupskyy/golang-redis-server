@@ -7,14 +7,11 @@ import (
 	"time"
 
 	"github.com/askorupskyy/golang-redis-server/app/cache"
+	"github.com/askorupskyy/golang-redis-server/app/commands/helpers"
 )
 
 func HandleTTL(args []string, conn net.Conn) {
-	var key string
-
-	if len(args) >= 5 {
-		key = args[4]
-	}
+	key := helpers.GetKey(args)
 
 	if key == "" {
 		log.Printf("Key `TTL` not provided: %s\n", conn.LocalAddr())
@@ -29,6 +26,7 @@ func HandleTTL(args []string, conn net.Conn) {
 			log.Printf("conn.Write() in `SET` failed: %s\n", conn.LocalAddr())
 			conn.Close()
 		}
+		return
 	}
 
 	expiryTimestamp := obj.Expiry.Local().UnixMilli()
